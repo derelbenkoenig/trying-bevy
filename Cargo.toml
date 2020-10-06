@@ -6,7 +6,7 @@ edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[target.'cft(target_os != "macos")'.dependencies]
+[target.'cfg(target_os != "macos")'.dependencies]
 amethyst = { git = "https://github.com/amethyst/amethyst", features = ["vulkan"] }
 
 [target.'cfg(macos)'.dependencies]

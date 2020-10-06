@@ -14,6 +14,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: install dependencies
+      run: |
+              apt install \
+              gcc \
+              pkg-config \
+              openssl \
+              libasound2-dev \
+              cmake \
+              build-essential \
+              python3 \
+              libfreetype6-dev \
+              libexpat1-dev \
+              libxcb-composite0-dev \
+              libssl-dev \
+              libx11-dev
     - name: Build
       run: cargo build --verbose
     - name: Run tests

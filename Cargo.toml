@@ -8,9 +8,14 @@ edition = "2018"
 
 [dependencies]
 
-[dependencies.amethyst]
+[dependencies]
+amethyst = {
 git = "https://github.com/amethyst/amethyst"
 features = ["vulkan"]
+}
 
-[target.'cfg(macos)'.dependencies.amethyst]
+[target.'cfg(macos)'.dependencies]
+amethyst = {
+git = "https://github.com/amethyst/amethyst"
 features = ["metal"]
+}

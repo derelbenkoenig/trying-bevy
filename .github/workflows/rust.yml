@@ -13,31 +13,35 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: install dependencies
-      run: |
-              sudo apt install \
-              gcc \
-              pkg-config \
-              openssl \
-              libasound2-dev \
-              cmake \
-              build-essential \
-              python3 \
-              libfreetype6-dev \
-              libexpat1-dev \
-              libxcb-composite0-dev \
-              libssl-dev \
-              libx11-dev
-    - name: Build
-      run: cargo +nightly -Zfeatures=itarget,build_dep build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - uses: actions/checkout@v2
+      - name: install dependencies
+        run: |
+                sudo apt install \
+                gcc \
+                pkg-config \
+                openssl \
+                libasound2-dev \
+                cmake \
+                build-essential \
+                python3 \
+                libfreetype6-dev \
+                libexpat1-dev \
+                libxcb-composite0-dev \
+                libssl-dev \
+                libx11-dev
+      - name: Install nightly rust
+        run: rustup toolchain install nightly
+      - name: Build
+        run: cargo +nightly -Zfeatures=itarget,build_dep build --verbose
+      - name: Run tests
+        run: cargo test --verbose
 
   build-macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install nightly rust
+        run: rustup toolchain install nightly
       - name: Build
         run: cargo +nightly -Zfeatures=itarget,build_dep build --verbose
       - name: Run tests
@@ -47,6 +51,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install nightly rust
+        run: rustup toolchain install nightly
       - name: Build
         run: cargo +nightly -Zfeatures=itarget,build_dep build --verbose
       - name: Run tests

@@ -1,0 +1,49 @@
+name: Rust
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install dependencies
+        run: |
+          sudo apt install \
+          gcc \
+          pkg-config \
+          openssl \
+          libasound2-dev \
+          cmake \
+          build-essential \
+          python3 \
+          libfreetype6-dev \
+          libexpat1-dev \
+          libxcb-composite0-dev \
+          libssl-dev \
+          libx11-dev
+      - name: Build & Test
+        run: cargo test --verbose
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install nightly rust
+        run: rustup toolchain install nightly
+      - name: Build & Test
+        run: cargo test --no-default-features --features mac --verbose
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build & Test
+        run: cargo test --no-default-features --features windows --verbose

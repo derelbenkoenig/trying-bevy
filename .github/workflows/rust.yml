@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: install dependencies
       run: |
-              apt install \
+              sudo apt install \
               gcc \
               pkg-config \
               openssl \

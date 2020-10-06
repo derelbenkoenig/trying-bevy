@@ -1,0 +1,4 @@
+(
+  title: "My Amethyst Project",
+  dimensions: Some((500, 500)),
+)

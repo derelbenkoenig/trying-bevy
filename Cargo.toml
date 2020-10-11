@@ -4,12 +4,6 @@ version = "0.1.0"
 authors = ["derelbenkoenig <derelbenkoenig@gmail.com>"]
 edition = "2018"
 
-[features]
-default = ["linux"]
-windows = ["amethyst/vulkan"]
-mac = ["amethyst/metal"]
-linux = ["amethyst/vulkan"]
-
 [dependencies]
-amethyst = {git = "https://github.com/amethyst/amethyst"}
+bevy = { git = "https://github.com/bevyengine/bevy" }
 

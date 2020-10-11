@@ -1,6 +1,11 @@
 # my-amethyst-project
 game development using the Amethyst game engine in Rust
 
+## Dependencies
+This project relies on [amethyst](https://github.com/amethyst/amethyst#dependencies).
+
+Ensure you follow its Dependencies installation guide.
+
 ## Running locally
 Due to a workaround since conditional features aren't supported yet (https://github.com/rust-lang/cargo/issues/7914)
 features are used to choose which OS you want this to compile on, and the appropriate dependencies will be used.
@@ -8,6 +13,8 @@ features are used to choose which OS you want this to compile on, and the approp
 ```bash
 # Linux, this is the default so nothing extra is needed
 cargo run --release
+# Fedora uses wayland, so use this to fallback to x11 until https://github.com/amethyst/space-menace/issues/32 is resolved
+WINIT_UNIX_BACKEND=x11 cargo run --release
 ```
 
 ```bash

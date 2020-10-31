@@ -14,22 +14,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        # I _think_ these were only necessary for amethyst and not bevy?
-#     - name: install dependencies
-#       run: |
-#         sudo apt install \
-#         gcc \
-#         pkg-config \
-#         openssl \
-#         libasound2-dev \
-#         cmake \
-#         build-essential \
-#         python3 \
-#         libfreetype6-dev \
-#         libexpat1-dev \
-#         libxcb-composite0-dev \
-#         libssl-dev \
-#         libx11-dev
+      # TODO these were all needed for amethyst, some may not be for bevy though
+      - name: install dependencies
+        run: |
+          sudo apt install \
+          gcc \
+          pkg-config \
+          openssl \
+          libasound2-dev \
+          cmake \
+          build-essential \
+          python3 \
+          libfreetype6-dev \
+          libexpat1-dev \
+          libxcb-composite0-dev \
+          libssl-dev \
+          libx11-dev
 #     # TODO make tests work, switch back to cargo test
       - name: Install Nightly
         run: rustup toolchain install nightly

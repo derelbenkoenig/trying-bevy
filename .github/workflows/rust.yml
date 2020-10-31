@@ -29,7 +29,8 @@ jobs:
           libexpat1-dev \
           libxcb-composite0-dev \
           libssl-dev \
-          libx11-dev
+          libx11-dev \
+          libudev-dev
 #     # TODO make tests work, switch back to cargo test
       - name: Install Nightly
         run: rustup toolchain install nightly

@@ -31,6 +31,8 @@ jobs:
 #         libssl-dev \
 #         libx11-dev
 #     # TODO make tests work, switch back to cargo test
+      - name: Install Nightly
+        run: rustup toolchain install nightly
       - name: Build & Test
         run: cargo +nightly build --verbose
 
@@ -49,5 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 #     # TODO make tests work, switch back to cargo test
+      - name: Install Nightly
+        run: rustup toolchain install nightly
       - name: Build & Test
         run: cargo +nightly build --verbose

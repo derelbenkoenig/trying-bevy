@@ -1,6 +1,20 @@
 # my-amethyst-project
 game development using the Amethyst game engine in Rust
 
+## Purpose
+Create a focused, opinionated fighting game engine from Amethyst.
+
+Initial support goals for the project are.
+
+- Game states serializable, rewindable
+    - Enable Rollback netcode for online play
+    - Regardless of online play, enable time-travel-like mechanics
+- Easy to create games from
+    - Add character assets
+    - Add move sets for characters
+- Proof of concept
+    - A fighting game using the engine designed above
+
 ## Dependencies
 This project relies on [amethyst](https://github.com/amethyst/amethyst#dependencies).
 

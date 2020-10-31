@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      # TODO these were all needed for amethyst, some may not be for bevy though
       - name: install dependencies
         run: |
           sudo apt install \
@@ -28,9 +29,12 @@ jobs:
           libexpat1-dev \
           libxcb-composite0-dev \
           libssl-dev \
-          libx11-dev
+          libx11-dev \
+          libudev-dev
+      - name: Install Nightly
+        run: rustup toolchain install nightly
       - name: Build & Test
-        run: cargo test --verbose
+        run: cargo +nightly test --verbose
 
   build-macos:
     runs-on: macos-latest
@@ -39,11 +43,13 @@ jobs:
       - name: Install nightly rust
         run: rustup toolchain install nightly
       - name: Build & Test
-        run: cargo test --no-default-features --features mac --verbose
+        run: cargo +nightly test --verbose
 
   build-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install Nightly
+        run: rustup toolchain install nightly
       - name: Build & Test
-        run: cargo test --no-default-features --features windows --verbose
+        run: cargo +nightly test --verbose

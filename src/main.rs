@@ -23,7 +23,6 @@ mod prelude {
     pub use bevy::prelude::*;
     pub use bevy_framepace::{FramepacePlugin, FramepaceSettings, Limiter};
     pub use bevy_ggrs::prelude::*;
-    pub use bevy_inspector_egui::quick::WorldInspectorPlugin;
     pub use bevy_rapier2d::prelude::*;
     pub use bytemuck::{Pod, Zeroable};
     pub use ggrs::{Frame, InputStatus, PlayerType, SessionBuilder};
@@ -254,8 +253,7 @@ fn main() {
     app.add_plugins(RapierDebugRenderPlugin {
         enabled: true,
         ..default()
-    })
-    .add_plugins(WorldInspectorPlugin::new());
+    });
 
     // I have found that since GGRS is limiting the movement FPS anyway,
     // there isn't much of a point in rendering more frames than necessary.

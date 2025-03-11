@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use crate::fighter::*;
 
 pub fn startup(mut commands: Commands) {
     // frame updating
@@ -10,7 +11,7 @@ pub fn startup(mut commands: Commands) {
     commands.insert_resource(PhysicsEnabled::default());
 
     // random movement for testing
-    commands.insert_resource(RandomInput { on: true });
+    commands.insert_resource(RandomInput { on: false });
 }
 
 pub fn reset_rapier(
@@ -111,6 +112,7 @@ pub fn respawn_all(mut commands: Commands, spawn_pool: Query<(Entity, &Determini
             local: Transform::from_xyz(-10., -50., 0.),
             ..default()
         })
+        .insert(Fighter::default())
         .add_rollback();
 
     commands
@@ -126,6 +128,7 @@ pub fn respawn_all(mut commands: Commands, spawn_pool: Query<(Entity, &Determini
             local: Transform::from_xyz(10., -50., 0.),
             ..default()
         })
+        .insert(Fighter::default())
         .add_rollback();
 
     let thickness = 10.0;
@@ -135,6 +138,7 @@ pub fn respawn_all(mut commands: Commands, spawn_pool: Query<(Entity, &Determini
     commands
         .entity(sorted_entity_pool.pop().unwrap())
         .insert(Name::new("Floor"))
+        .insert(Floor{})
         .insert(FixedColliderBundle {
             collider: Collider::cuboid(overlapping_box_length, thickness),
             ..default()
@@ -184,6 +188,7 @@ pub fn respawn_all(mut commands: Commands, spawn_pool: Query<(Entity, &Determini
     commands
         .entity(sorted_entity_pool.pop().unwrap())
         .insert(Name::new("Southeast Corner"))
+        .insert(Floor{})
         .insert(FixedColliderBundle {
             collider: Collider::convex_hull(&[
                 Vec2::new(0., 0.),
@@ -201,6 +206,7 @@ pub fn respawn_all(mut commands: Commands, spawn_pool: Query<(Entity, &Determini
     commands
         .entity(sorted_entity_pool.pop().unwrap())
         .insert(Name::new("Southwest Corner"))
+        .insert(Floor{})
         .insert(FixedColliderBundle {
             collider: Collider::convex_hull(&[
                 Vec2::new(0., 0.),

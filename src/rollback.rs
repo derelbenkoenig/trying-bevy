@@ -3,6 +3,7 @@ use bevy_ggrs::{LocalInputs, LocalPlayers};
 use bevy_matchbox::prelude::PeerId;
 
 use crate::prelude::*;
+use crate::fighter::*;
 
 // These are just 16 bit for bit-packing alignment in the input struct
 const INPUT_UP: u16 = 0b00001;
@@ -42,7 +43,7 @@ pub fn input(
         // Do not do anything until physics are live
         if physics_enabled.0 {
             // Build the input
-            if keyboard_input.pressed(KeyCode::KeyW) {
+            if keyboard_input.pressed(KeyCode::KeyW) || keyboard_input.pressed(KeyCode::Space) {
                 input |= INPUT_UP;
             }
             if keyboard_input.pressed(KeyCode::KeyA) {
@@ -79,11 +80,11 @@ pub fn input(
 }
 
 pub fn apply_inputs(
-    mut query: Query<(&mut Velocity, &Player)>,
+    mut query: Query<(&mut Velocity, &Player, &mut Fighter)>,
     inputs: Res<PlayerInputs<ExampleGgrsConfig>>,
     physics_enabled: Res<PhysicsEnabled>,
 ) {
-    for (mut v, p) in query.iter_mut() {
+    for (mut v, p, mut f) in query.iter_mut() {
         let (game_input, input_status) = inputs[p.handle];
         let input = match input_status {
             InputStatus::Confirmed => game_input.input,
@@ -105,24 +106,16 @@ pub fn apply_inputs(
         let right = input & INPUT_RIGHT != 0;
         let left = input & INPUT_LEFT != 0;
         let up = input & INPUT_UP != 0;
-        let down = input & INPUT_DOWN != 0;
+        // let down = input & INPUT_DOWN != 0;
 
         let direction_right = right && !left;
         let direction_left = left && !right;
-        let direction_up = up && !down;
-        let direction_down = down && !up;
+        // let direction_up = up && !down;
+        // let direction_down = down && !up;
 
         let horizontal = if direction_left {
             -1.
         } else if direction_right {
-            1.
-        } else {
-            0.
-        };
-
-        let vertical = if direction_down {
-            -1.
-        } else if direction_up {
             1.
         } else {
             0.
@@ -134,16 +127,17 @@ pub fn apply_inputs(
             0.
         };
 
-        let new_vel_y = if vertical != 0. {
-            v.linvel.y + vertical * 10.0
-        } else {
-            0.
-        };
+        let jump = !f.airborne && up;
+        if jump {
+            v.linvel.y = 80.;
+            f.airborne = true;
+        }
 
         // This is annoying but we have to make sure we only trigger an update in Rapier when explicitly necessary!
-        if new_vel_x != v.linvel.x || new_vel_y != v.linvel.y {
+        // if new_vel_x != v.linvel.x || new_vel_y != v.linvel.y {
+        if new_vel_x != v.linvel.x {
             v.linvel.x = new_vel_x;
-            v.linvel.y = new_vel_y;
+            // v.linvel.y = new_vel_y;
         }
     }
 }

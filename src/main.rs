@@ -7,6 +7,7 @@ mod random_movement;
 mod rollback;
 mod spawn;
 mod startup;
+mod fighter;
 
 // A prelude to simplify other file imports
 mod prelude {
@@ -19,6 +20,7 @@ mod prelude {
     pub use crate::rollback::*;
     pub use crate::spawn::*;
     pub use crate::startup::*;
+    pub use crate::fighter::*;
     pub use bevy::log::*;
     pub use bevy::prelude::*;
     pub use bevy_framepace::{FramepacePlugin, FramepaceSettings, Limiter};
@@ -52,10 +54,10 @@ mod prelude {
     // So, use Johan's compatible matchbox.
     // Check out their work on "Cargo Space", especially the blog posts, which are incredibly enlightening!
     // https://johanhelsing.studio/cargospace
-    pub const MATCHBOX_ADDR: &str =
-        "wss://match-0-7.helsing.studio/bevy-ggrs-rapier-example?next=2";
+    // pub const MATCHBOX_ADDR: &str =
+    //     "wss://match-0-7.helsing.studio/bevy-ggrs-rapier-example?next=2";
     // Care to run your own matchbox?  Great!
-    // pub const MATCHBOX_ADDR: &str = "ws://localhost:3536/bevy-ggrs-rapier-example?next=2";
+    pub const MATCHBOX_ADDR: &str = "ws://localhost:3536/bevy-ggrs-rapier-example?next=2";
     // TODO: Maybe update this room name (bevy-ggrs-rapier-example) so we don't test with each other :-)
 }
 
@@ -189,6 +191,7 @@ fn main() {
         .add_systems(
             (
                 apply_inputs,
+                land_on_ground,
                 force_update_rollbackables,
                 // Make sure to flush everything before Rapier syncs
                 apply_deferred,
@@ -211,7 +214,7 @@ fn main() {
         .add_systems(
             (
                 save_rapier_context, // This must execute after writeback to store the RapierContext
-                pause_physics_test,
+                // pause_physics_test,
                 log_end_frame,
                 apply_deferred, // Flushing again
             )
@@ -223,7 +226,7 @@ fn main() {
     app.add_plugins(
         RapierPhysicsPlugin::<NoUserData>::default()
             // The physics scale really should not matter for a game of this size
-            .with_length_unit(1.)
+            .with_length_unit(10.)
             // This allows us to hook in the systems ourselves above in the GGRS schedule
             .with_default_system_setup(false),
     );
@@ -246,6 +249,9 @@ fn main() {
 
     // Do not check internal structures for transform changes
     rapier_config.force_update_from_transform_changes = true;
+
+    // increase the gravity because it's too floaty
+    rapier_config.gravity = Vect::Y * -40.;
 
     app.insert_resource(rapier_config);
 

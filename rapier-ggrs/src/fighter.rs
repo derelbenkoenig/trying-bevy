@@ -8,6 +8,7 @@ pub struct Fighter {
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Default, Component)]
 pub struct Floor{}
 
+// simply set airborne to false if we are ever touching the ground
 pub fn land_on_ground(
     mut fighters: Query<(Entity, &mut Fighter)>,
     floor: Query<Entity, With<Floor>>,
